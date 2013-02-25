@@ -173,3 +173,8 @@ pip-log.txt
 /*.cache
 /.settings
 /.settings
+/.settings/org.eclipse.jdt.core.prefs
+/.settings/org.scala-ide.sdt.core.prefs
+.worksheet
+.worksheet
+/.worksheet/src/TestSheet.scala

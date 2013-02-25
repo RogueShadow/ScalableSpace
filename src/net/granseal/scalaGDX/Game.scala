@@ -44,9 +44,9 @@ class Game extends ApplicationListener {
       Gdx.gl.glClearColor(0.2f, 0.5f, 0.5f, 1);
       Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     sb.begin()
+        entities.foreach(_.draw(sb))
     	Assets.font.setColor(0,1,1,1)
-    	Assets.font.draw(sb, "Hello World", 30, 30)
-    	entities.foreach(_.draw(sb))
+    	Assets.font.draw(sb, "Time: " + totalTime.toInt, 30, 30)
     sb.end()
     update(Gdx.graphics.getDeltaTime())
     entities.foreach(_.update(Gdx.graphics.getDeltaTime()))
