@@ -178,3 +178,4 @@ pip-log.txt
 .worksheet
 .worksheet
 /.worksheet/src/TestSheet.scala
+/libs
