@@ -25,11 +25,11 @@ class Entity(var x: Float, var y: Float) {
   
   def draw(sr: ShapeRenderer) = {
 
-    sr.begin(ShapeRenderer.ShapeType.FilledTriangle)
+    sr.begin(ShapeRenderer.ShapeType.Filled)
       sr.identity()
       sr.translate(x, y, 0)
       sr.rotate(0, 0, 1, rotation-90)
-      sr.filledTriangle(0,+32,-32,-32,+32,-32)
+      sr.triangle(0,+32,-32,-32,+32,-32)
     sr.end()
 
   }
