@@ -39,6 +39,7 @@ class Game extends ApplicationListener {
         val y = Assets.rnd.nextFloat*Gdx.graphics.getHeight
     	Manager.add(new Entity(x,y))
     }
+    
    
   }
   def dispose(): Unit = {
@@ -78,8 +79,7 @@ class Game extends ApplicationListener {
     x = Gdx.input.getX().toFloat
     y = -Gdx.input.getY().toFloat + 600
 
-    if (totalTime.toInt != lastTimeDraw)
-      lastTimeDraw = totalTime.toInt
+    if (totalTime.toInt != lastTimeDraw) lastTimeDraw = totalTime.toInt
     
   }
   
