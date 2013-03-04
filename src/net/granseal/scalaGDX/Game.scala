@@ -35,7 +35,7 @@ class Game extends ApplicationListener {
     cam = new OrthographicCamera
     cam.setToOrtho(false,800,600)
 
-    for (i <- 1 to 100)  {
+    for (i <- 1 to 100)  { // special!
         val x = Assets.rnd.nextFloat*Gdx.graphics.getWidth
         val y = Assets.rnd.nextFloat*Gdx.graphics.getHeight
     	entities += new Entity(x,y)
