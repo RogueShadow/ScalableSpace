@@ -22,6 +22,10 @@ class Entity(var x: Float, var y: Float) {
     speed = speed + 0.03f*Assets.rnd.nextFloat
     direction += 0.0005f*Assets.rnd.nextFloat*spin
     rotation = direction.toDegrees.toFloat
+    if (speed > 1000){
+      Manager.add(new Entity(x,y))
+      Manager.remove(this)
+    }
   }
   
   def draw(sr: ShapeRenderer) = {
