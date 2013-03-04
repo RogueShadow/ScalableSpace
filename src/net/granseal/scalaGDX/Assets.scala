@@ -10,4 +10,10 @@ object Assets {
 	val box = new Texture("assets/box.png")
 	val font = new BitmapFont(Gdx.files.internal("assets/thefont.fnt"),Gdx.files.internal("assets/thefont.png"),false)
 	val rnd = new Random()
+	
+	
+	def dispose() {
+	  box.dispose()
+	  font.dispose()
+	}
 }

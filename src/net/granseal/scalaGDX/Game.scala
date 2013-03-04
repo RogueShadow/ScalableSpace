@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
 class Game extends ApplicationListener {
   
+  
   var x: Float = _
   var y: Float = _
   var sb: SpriteBatch = _
@@ -41,7 +42,11 @@ class Game extends ApplicationListener {
     }
    
   }
-  def dispose(): Unit = {}
+  def dispose(): Unit = {
+    Assets.dispose
+    sb.dispose()
+    shapeRender.dispose()
+  }
   def pause(): Unit = {}
   def render(): Unit = {
     
@@ -51,7 +56,7 @@ class Game extends ApplicationListener {
     cam.update()
     shapeRender.setProjectionMatrix(cam.combined)
     
-    Gdx.gl.glClearColor(0.2f, 0.5f, 0.5f, 1);
+    Gdx.gl.glClearColor(0,0,0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     
     entities.foreach(_.draw(shapeRender))
@@ -68,8 +73,7 @@ class Game extends ApplicationListener {
 
   def update(delta: Float): Unit = {
     
-    cam.zoom += 0.0002f
-    cam.rotate(0.05f)
+
     totalTime += delta
     
     x = Gdx.input.getX().toFloat

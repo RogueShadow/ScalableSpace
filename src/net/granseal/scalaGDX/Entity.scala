@@ -13,6 +13,7 @@ class Entity(var x: Float, var y: Float) {
   var direction = Assets.rnd.nextFloat*Math.PI.toFloat*2;
   var rotation = direction
   val spin = if (Assets.rnd.nextBoolean) -1 else 1
+  val color = new Color(Assets.rnd.nextFloat,Assets.rnd.nextFloat,Assets.rnd.nextFloat,1)
   
   def update(delta: Float) = {
     x = x + (speed*Math.cos((direction)).toFloat)*delta
@@ -27,6 +28,7 @@ class Entity(var x: Float, var y: Float) {
 
     sr.begin(ShapeRenderer.ShapeType.Filled)
       sr.identity()
+      sr.setColor(color)
       sr.translate(x, y, 0)
       sr.rotate(0, 0, 1, rotation-90)
       sr.triangle(0,+32,-32,-32,+32,-32)
