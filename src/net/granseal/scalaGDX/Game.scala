@@ -22,7 +22,6 @@ class Game extends ApplicationListener {
   var totalTime: Double = 0
   var lastTimeDraw = 0
   var fps = new FPSLogger()
-  val entities = new ArrayBuffer[Entity]
 
   
   def create(): Unit = {
@@ -38,7 +37,7 @@ class Game extends ApplicationListener {
     for (i <- 1 to 100)  { // special!
         val x = Assets.rnd.nextFloat*Gdx.graphics.getWidth
         val y = Assets.rnd.nextFloat*Gdx.graphics.getHeight
-    	entities += new Entity(x,y)
+    	Manager.add(new Entity(x,y))
     }
    
   }
@@ -51,15 +50,14 @@ class Game extends ApplicationListener {
   def render(): Unit = {
     
     update(Gdx.graphics.getDeltaTime())
-    entities.foreach(_.update(Gdx.graphics.getDeltaTime()))
-    
-    cam.update()
-    shapeRender.setProjectionMatrix(cam.combined)
     
     Gdx.gl.glClearColor(0,0,0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     
-    entities.foreach(_.draw(shapeRender))
+    cam.update()
+    shapeRender.setProjectionMatrix(cam.combined)
+
+    Manager.draw(shapeRender)
     
     sb.begin()
     	Assets.font.setColor(0,1,1,1)
@@ -73,7 +71,8 @@ class Game extends ApplicationListener {
 
   def update(delta: Float): Unit = {
     
-
+    Manager.update(delta)
+    
     totalTime += delta
     
     x = Gdx.input.getX().toFloat
