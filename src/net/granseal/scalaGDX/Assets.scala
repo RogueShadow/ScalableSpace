@@ -5,12 +5,16 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.Gdx
 import scala.util.Random
+import com.badlogic.gdx.graphics.Color
 
 object Assets {
 	val box = new Texture("assets/box.png")
 	val font = new BitmapFont(Gdx.files.internal("assets/thefont.fnt"),Gdx.files.internal("assets/thefont.png"),false)
 	val rnd = new Random()
 	
+	def r = rnd.nextFloat
+	
+	def rColor = new Color(r,r,r,1)
 	
 	def dispose() {
 	  box.dispose()
