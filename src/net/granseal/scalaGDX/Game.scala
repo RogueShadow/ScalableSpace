@@ -37,8 +37,9 @@ class Game extends ApplicationListener {
     for (i <- 1 to 100)  { // special!
         val x = Assets.rnd.nextFloat*Gdx.graphics.getWidth
         val y = Assets.rnd.nextFloat*Gdx.graphics.getHeight
-    	Manager.add(new Entity(x,y))
+    	Manager.add(Entity(x,y))
     }
+    Manager.addPlayer(Entity.Player(400, 500, 1))
     
    
   }
@@ -49,7 +50,6 @@ class Game extends ApplicationListener {
   }
   def pause(): Unit = {}
   def render(): Unit = {
-    
     update(Gdx.graphics.getDeltaTime())
     
     Gdx.gl.glClearColor(0,0,0, 1);
@@ -73,6 +73,13 @@ class Game extends ApplicationListener {
   def update(delta: Float): Unit = {
     
     Manager.update(delta)
+    
+    val player = Manager.getPlayer(1)
+    if (player.isDefined){
+      player.get.color.set(Assets.r,Assets.r,Assets.r,1)
+    }else{
+      Console.out.println("Player not found.")
+    }
     
     totalTime += delta
     
