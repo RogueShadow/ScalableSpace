@@ -1,7 +1,6 @@
 package net.granseal.scalaGDX
 
 import scala.collection.mutable.ArrayBuffer
-
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.FPSLogger
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.GL10
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Vector3
 
 
 class Game extends ApplicationListener {
@@ -71,12 +71,21 @@ class Game extends ApplicationListener {
   def resume(): Unit = {}
 
   def update(delta: Float): Unit = {
-    
+	import com.badlogic.gdx.Input.Keys._
+    def key(k: Int) = Gdx.input.isKeyPressed(k)
     Manager.update(delta)
-    
+    if (key(Z)){
+      cam.zoom -= 1f*delta
+    }
+	if (key(X)){
+	  cam.zoom += 1f*delta
+	}
     val player = Manager.getPlayer(1)
     if (player.isDefined){
       player.get.color.set(Assets.r,Assets.r,Assets.r,1)
+      val x = player.get.pos.x
+      val y = player.get.pos.y
+      cam.position.set(x, y, 0)
     }else{
       Console.out.println("Player not found.")
     }

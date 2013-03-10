@@ -9,7 +9,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 
-class Entity(pos: Vector2, id: Int) {
+class Entity(var pos: Vector2, id: Int) {
 
 
   var speed = 7f * Assets.rnd.nextFloat + 1

@@ -10,7 +10,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar">
+	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="/ScalaEx/libs/gdx-sources.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Test"/>
 		</attributes>
