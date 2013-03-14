@@ -1,0 +1,24 @@
+Game Design Document
+
+Features:
+	Sheilds
+	Missiles
+	Energy Cannons
+	Scanners
+	Mining Lasers
+	Planets
+	Stars
+	Star Systems
+	Galaxies
+	Large 2d world
+	Intership Energy management
+	Different Types of sheilds and shield configurations, same for missiles, cannons, scanners, lasers
+    Solar Winds Inspired gameplay, greatly extended. Similar art themes.
+    Enemy ships
+    Cloaking devices
+    AI (pushing it :D)
+    In-game level editing. (likely one huge level :D )
+    Expressive dialog system, tieing into a quest creation system.
+    Multiplayer ( totally would be awesome, here's hoping.
+    Well formatted, well thought out and organized Design Doc, (eventually!)
+    Pretty Sounds/Music/Art
