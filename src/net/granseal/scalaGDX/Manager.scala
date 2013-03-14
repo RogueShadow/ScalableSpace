@@ -39,8 +39,8 @@ object Manager {
     doLists()
   }
   
-  def draw(sr: ShapeRenderer) = {
-    entities.foreach(_.draw(sr))
+  def draw(sb: SpriteBatch) = {
+    entities.foreach(_.draw(sb))
   }
   
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.math.Matrix4
 
 
 class Game extends ApplicationListener {
@@ -18,7 +19,8 @@ class Game extends ApplicationListener {
   var y: Float = _
   var sb: SpriteBatch = _
   var shapeRender: ShapeRenderer = _
-  var cam: OrthographicCamera = _
+  var gameCam: OrthographicCamera = _
+  var screenCam: OrthographicCamera = _
   var totalTime: Double = 0
   var lastTimeDraw = 0
   var fps = new FPSLogger()
@@ -26,13 +28,18 @@ class Game extends ApplicationListener {
   
   def create(): Unit = {
     
+    
+    Assets.loadImage("assets/spaceship.png", "ship")
+    Assets.loadImage("assets/bullet.png", "bullet")
     Gdx.graphics.setVSync(false)
     
     sb = new SpriteBatch
     shapeRender = new ShapeRenderer
     
-    cam = new OrthographicCamera
-    cam.setToOrtho(false,800,600)
+    screenCam = new OrthographicCamera
+    screenCam.setToOrtho(false,800,600)
+    gameCam = new OrthographicCamera
+    gameCam.setToOrtho(false,800,600)
 
     for (i <- 1 to 100)  { // special!
         val x = Assets.rnd.nextFloat*Gdx.graphics.getWidth
@@ -55,11 +62,14 @@ class Game extends ApplicationListener {
     Gdx.gl.glClearColor(0,0,0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     
-    cam.update()
-    shapeRender.setProjectionMatrix(cam.combined)
+    gameCam.update()
 
-    Manager.draw(shapeRender)
+    shapeRender.setProjectionMatrix(gameCam.combined)
+    sb.setProjectionMatrix(gameCam.combined)
+    Manager.draw(sb)
     
+    
+    sb.setProjectionMatrix(screenCam.combined)
     sb.begin()
     	Assets.font.setColor(0,1,1,1)
     	Assets.font.draw(sb, "Time: " + totalTime.toInt, 30, 30)
@@ -75,17 +85,16 @@ class Game extends ApplicationListener {
     def key(k: Int) = Gdx.input.isKeyPressed(k)
     Manager.update(delta)
     if (key(Z)){
-      cam.zoom -= 1f*delta
+      gameCam.zoom -= 1f*delta
     }
 	if (key(X)){
-	  cam.zoom += 1f*delta
+	  gameCam.zoom += 1f*delta
 	}
     val player = Manager.getPlayer(1)
     if (player.isDefined){
-      player.get.color.set(Assets.r,Assets.r,Assets.r,1)
       val x = player.get.pos.x
       val y = player.get.pos.y
-      cam.position.set(x, y, 0)
+      gameCam.position.set(x, y, 0)
     }else{
       Console.out.println("Player not found.")
     }

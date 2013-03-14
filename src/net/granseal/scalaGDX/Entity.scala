@@ -18,6 +18,7 @@ class Entity(var pos: Vector2, id: Int) {
   val spin = if (Assets.rnd.nextBoolean) -1 else 1
   val color = new Color(Assets.rnd.nextFloat, Assets.rnd.nextFloat, Assets.rnd.nextFloat, 1)
   val playerID = id
+  val sprite: Sprite = new Sprite(Assets("ship"))
 
   def update(delta: Float) = {
     if (playerID != 0) {
@@ -28,20 +29,21 @@ class Entity(var pos: Vector2, id: Int) {
   }
 
   def playerUpdate(delta: Float) = {
+    import com.badlogic.gdx.Input.Keys._
     def key(k: Int) = Gdx.input.isKeyPressed(k)
 
-    if (key(Input.Keys.W)) {
+    if (key(W)) {
     	val accel = new Vector2(100,100).mul(delta)
     	accel.setAngle(rotation + 90)
     	pos.add(accel)
     }
-    if (key(Input.Keys.A)) {
+    if (key(A)) {
       rotation += 180f * delta
     }
-    if (key(Input.Keys.S)) {
+    if (key(S)) {
 
     }
-    if (key(Input.Keys.D)) {
+    if (key(D)) {
       rotation -= 180f * delta
     }
   }
@@ -63,14 +65,12 @@ class Entity(var pos: Vector2, id: Int) {
     }
   }
 
-  def draw(sr: ShapeRenderer) = {
-    sr.begin(ShapeRenderer.ShapeType.Filled)
-    sr.identity()
-    sr.setColor(color)
-    sr.translate(pos.x, pos.y, 0)
-    sr.rotate(0, 0, 1, rotation)
-    sr.triangle(0, +32, -32, -32, +32, -32)
-    sr.end()
+  def draw(sb: SpriteBatch) = {
+    sb.begin()
+    sprite.setPosition(pos.x, pos.y)
+    sprite.setRotation(rotation)
+    sprite.draw(sb)
+    sb.end()
   }
 }
 
