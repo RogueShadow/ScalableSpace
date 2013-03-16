@@ -18,7 +18,7 @@ class Entity(var pos: Vector2, id: Int) {
   val spin = if (Assets.rnd.nextBoolean) -1 else 1
   val color = new Color(Assets.rnd.nextFloat, Assets.rnd.nextFloat, Assets.rnd.nextFloat, 1)
   val playerID = id
-  val sprite: Sprite = new Sprite(Assets("ship"))
+  val shipType = 0
 
   def update(delta: Float) = {
     if (playerID != 0) {
@@ -38,13 +38,13 @@ class Entity(var pos: Vector2, id: Int) {
     	pos.add(accel)
     }
     if (key(A)) {
-      rotation += 180f * delta
+      rotation -= 180f * delta
     }
     if (key(S)) {
 
     }
     if (key(D)) {
-      rotation -= 180f * delta
+      rotation += 180f * delta
     }
   }
 
@@ -56,21 +56,27 @@ class Entity(var pos: Vector2, id: Int) {
     //x = x + (speed * Math.cos((direction)).toFloat) * delta
     //y = y + (speed * Math.sin((direction)).toFloat) * delta
     
-    speed = speed + 0.03f * Assets.rnd.nextFloat
-    rotation += 100*delta * Assets.rnd.nextFloat * spin
+    speed = speed + 0.01f * Assets.rnd.nextFloat
+    rotation += 120*delta * Assets.rnd.nextFloat * spin
 
-    if (speed > 400) {
-      Manager.add(Entity(pos.x, pos.y))
-      Manager.remove(this)
+    if (speed > 100) {
+      val e1 = Entity(pos.x, pos.y)
+      val e2 = Entity(pos.x, pos.y)
+      e1.rotation += 180
+      e1.direction *= -1
+      Manager remove this
+      Manager add e1
+      Manager add e2
     }
   }
 
-  def draw(sb: SpriteBatch) = {
-    sb.begin()
+  def draw(sb: SpriteBatch, sr: ShapeRenderer) = {
+    import ShipRef._
+    val sprite = hull(shipType)
     sprite.setPosition(pos.x, pos.y)
     sprite.setRotation(rotation)
     sprite.draw(sb)
-    sb.end()
+    
   }
 }
 

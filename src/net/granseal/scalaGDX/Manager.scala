@@ -28,8 +28,8 @@ object Manager {
   def remove(e: Entity) = removeList += e
   
   def doLists() = {
-    entities --= removeList
     entities ++= addList
+    entities --= removeList
     addList.clear()
     removeList.clear()
   }
@@ -39,8 +39,8 @@ object Manager {
     doLists()
   }
   
-  def draw(sb: SpriteBatch) = {
-    entities.foreach(_.draw(sb))
+  def draw(sb: SpriteBatch, sr: ShapeRenderer) = {
+    entities.foreach(_.draw(sb,sr))
   }
   
 }

@@ -10,44 +10,38 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.audio.AudioDevice
+import com.badlogic.gdx.InputProcessor
 
 
-class Game extends ApplicationListener {
+class Game extends ApplicationListener with InputProcessor{
   
-  
-  var x: Float = _
-  var y: Float = _
   var sb: SpriteBatch = _
   var shapeRender: ShapeRenderer = _
   var gameCam: OrthographicCamera = _
   var screenCam: OrthographicCamera = _
-  var totalTime: Double = 0
-  var lastTimeDraw = 0
   var fps = new FPSLogger()
-
   
   def create(): Unit = {
     
+    Gdx.input.setCursorCatched(true)
+    Gdx.input.setInputProcessor(this)
+    	  
+    //Load Assets related to ships.
+    ShipRef.loadAssets()
     
-    Assets.loadImage("assets/spaceship.png", "ship")
-    Assets.loadImage("assets/bullet.png", "bullet")
     Gdx.graphics.setVSync(false)
     
     sb = new SpriteBatch
     shapeRender = new ShapeRenderer
     
     screenCam = new OrthographicCamera
-    screenCam.setToOrtho(false,800,600)
+    screenCam.setToOrtho(true,800,600)
     gameCam = new OrthographicCamera
-    gameCam.setToOrtho(false,800,600)
+    gameCam.setToOrtho(true,800,600)
 
-    for (i <- 1 to 100)  { // special!
-        val x = Assets.rnd.nextFloat*Gdx.graphics.getWidth
-        val y = Assets.rnd.nextFloat*Gdx.graphics.getHeight
-    	Manager.add(Entity(x,y))
-    }
-    Manager.addPlayer(Entity.Player(400, 500, 1))
-    
+    Manager add Entity(400,300)
+    Manager addPlayer Entity.Player(400, 500, 1)
    
   }
   def dispose(): Unit = {
@@ -57,22 +51,37 @@ class Game extends ApplicationListener {
   }
   def pause(): Unit = {}
   def render(): Unit = {
-    update(Gdx.graphics.getDeltaTime())
+    // Helper funcs
+    def msg(msg: String, x: Int, y: Int){
+      Assets.font.setColor(0,1,1,1)
+      Assets.font.draw(sb, msg, x,y)
+    }
     
+    // Do update stuffs
+    update(Gdx.graphics.getDeltaTime())
+    gameCam.update()
+    shapeRender.setProjectionMatrix(gameCam.combined)
+    sb.setProjectionMatrix(gameCam.combined)
+    
+    // clear the screen
     Gdx.gl.glClearColor(0,0,0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     
-    gameCam.update()
-
-    shapeRender.setProjectionMatrix(gameCam.combined)
-    sb.setProjectionMatrix(gameCam.combined)
-    Manager.draw(sb)
-    
-    
-    sb.setProjectionMatrix(screenCam.combined)
+    //Start the game world rendering
     sb.begin()
-    	Assets.font.setColor(0,1,1,1)
-    	Assets.font.draw(sb, "Time: " + totalTime.toInt, 30, 30)
+    shapeRender.begin(ShapeRenderer.ShapeType.Line)
+    Manager.draw(sb, shapeRender)
+    
+
+    shapeRender.end()
+    sb.end()
+    
+    //use screenCam matrices so sprites can be drawn on the screen space properly
+    sb.setProjectionMatrix(screenCam.combined)
+   
+    sb.begin()
+    	msg("Entities: " + Manager.entities.size, 30, 30) 
+    	sb.draw(Assets.box,mx,my)
     sb.end()
     
     fps.log()
@@ -80,16 +89,25 @@ class Game extends ApplicationListener {
   def resize(x: Int, y: Int): Unit = {}
   def resume(): Unit = {}
 
+  
+
   def update(delta: Float): Unit = {
+    // Import keys localy for easy configs!
+    // Will have to do a proper key binding system later on.
+    // process input events elsewhere, polling input here.
 	import com.badlogic.gdx.Input.Keys._
     def key(k: Int) = Gdx.input.isKeyPressed(k)
+    
     Manager.update(delta)
+    
     if (key(Z)){
       gameCam.zoom -= 1f*delta
     }
 	if (key(X)){
 	  gameCam.zoom += 1f*delta
 	}
+	
+	// track player to camera, maybe there's a better way?
     val player = Manager.getPlayer(1)
     if (player.isDefined){
       val x = player.get.pos.x
@@ -99,13 +117,32 @@ class Game extends ApplicationListener {
       Console.out.println("Player not found.")
     }
     
-    totalTime += delta
-    
-    x = Gdx.input.getX().toFloat
-    y = -Gdx.input.getY().toFloat + 600
-
-    if (totalTime.toInt != lastTimeDraw) lastTimeDraw = totalTime.toInt
-    
   }
+  
+  def mx = Gdx.input.getX().toFloat
+  def my = Gdx.input.getY().toFloat
+  
+  //Process input Events here. VVV
+  def touchDown(x: Int, y: Int, p: Int, button: Int) = {
+    Gdx.input.setCursorCatched(true)
+    false
+  }
+  def keyDown(keycode: Int) = {
+	import com.badlogic.gdx.Input.Keys._
+	if (keycode == ESCAPE){
+	  if (Gdx.app.getInput().isCursorCatched()){
+	    Gdx.app.getInput().setCursorCatched(false)
+	  }else{
+	    Gdx.app.exit()
+	  }
+	}
+    true
+  } 
+  def keyUp(keycode: Int) = false
+  def keyTyped(character: Char) = false
+  def touchUp(x: Int, y: Int, p: Int, button: Int) = false
+  def touchDragged(x: Int, y: Int, p: Int) = false
+  def mouseMoved(x: Int, y: Int) = false
+  def scrolled(amount: Int) = false
   
 }
