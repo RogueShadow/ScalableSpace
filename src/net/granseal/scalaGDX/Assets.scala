@@ -49,7 +49,7 @@ object Assets {
 	    sprites += ((name, new Sprite(getTexture(tex))))
 	  }else{
 	    sprites += ((name, new Sprite(getTexture(tex))))
-	    Console.println("Added Sprite(" + name + ") from texture(" + tex + ")")
+	    Console.println("Added Sprite(" + name + ") from Texture(" + tex + ")")
 	  } 
 	}
 	
@@ -63,10 +63,10 @@ object Assets {
 	    images(name).dispose()
 	    images.remove(name)
 	    images += ((name, new Texture(img)))
-	    Console.println("Reloaded Texture(" + name + ") with texture file: " + img)
+	    Console.println("Reloaded Texture(" + name + ") with Texture("+img+")")
 	  }else{
 	    images += ((name, new Texture(img)))
-	    Console.println("Loaded Texture("+name+") from file("+img+")")
+	    Console.println("Loaded Texture("+name+") from File("+img+")")
 	  }
 	}	
 	

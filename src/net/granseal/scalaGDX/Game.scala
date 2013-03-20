@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.audio.AudioDevice
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.math.Vector2
 
 
 class Game extends ApplicationListener with InputProcessor{
@@ -40,14 +41,15 @@ class Game extends ApplicationListener with InputProcessor{
     gameCam = new OrthographicCamera
     gameCam.setToOrtho(true,800,600)
 
-    Manager add Entity(400,300)
-    Manager addPlayer Entity.Player(400, 500, 1)
+    Manager add Enemy(new Vector2(400,300))
+    Manager add Player(new Vector2(400,300), 1)
    
   }
   def dispose(): Unit = {
     Assets.dispose
     sb.dispose()
     shapeRender.dispose()
+    Console.println("Disposing resources")
   }
   def pause(): Unit = {}
   def render(): Unit = {
@@ -110,8 +112,8 @@ class Game extends ApplicationListener with InputProcessor{
 	// track player to camera, maybe there's a better way?
     val player = Manager.getPlayer(1)
     if (player.isDefined){
-      val x = player.get.pos.x
-      val y = player.get.pos.y
+      val x = player.get.position.x
+      val y = player.get.position.y
       gameCam.position.set(x, y, 0)
     }else{
       Console.out.println("Player not found.")

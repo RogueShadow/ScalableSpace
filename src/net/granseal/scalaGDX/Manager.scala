@@ -9,22 +9,22 @@ object Manager {
   val entities = new ArrayBuffer[Entity]
   val addList = new ArrayBuffer[Entity]
   val removeList = new ArrayBuffer[Entity]
-  val playerList = new ArrayBuffer[Entity]
+  val playerList = new ArrayBuffer[Player]
   
   def init() = {
     
     
   }
   
-  def getPlayer(id: Int): Option[Entity] = {
-    playerList.find(e => e.playerID == id)
+  def getPlayer(id: Int): Option[Player] = {
+    playerList.find(e => e.id == id)
   }
   
-  def add(e: Entity) = addList += e
-  def addPlayer(e: Entity) = {
+  def add[T <: Entity](e: T) = {
     addList += e
-    playerList += e
+    if (e.isInstanceOf[Player])playerList += e.asInstanceOf[Player]
   }
+
   def remove(e: Entity) = removeList += e
   
   def doLists() = {
