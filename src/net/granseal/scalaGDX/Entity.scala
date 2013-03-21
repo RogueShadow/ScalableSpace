@@ -15,7 +15,9 @@ abstract class Entity(pos: Vector2) {
     pos.add(vel.cpy().mul(delta))
   }
   
-  def draw(sb: SpriteBatch, sr: ShapeRenderer)
+  def draw(sb: SpriteBatch)
+  
+  def debug(sr: ShapeRenderer)
   
   def isPlayer = false
 }

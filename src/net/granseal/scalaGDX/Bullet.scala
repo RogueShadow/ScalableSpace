@@ -17,12 +17,14 @@ class Bullet(pos: Vector2, v: Vector2,lifetime: Int) extends Entity(pos: Vector2
     super.update(delta)
   }
   
-  def draw(sb: SpriteBatch, sr: ShapeRenderer) {
+  def draw(sb: SpriteBatch) {
     val sprite = Assets.getSprite("bullet_0")
-    sprite.setPosition(position.x, position.y)
+    sprite.setPosition(position.x - sprite.getWidth()/2, position.y - sprite.getHeight()/2)
     sprite.draw(sb)
   }
-  
+  def debug(sr: ShapeRenderer){
+    
+  }
 }
 
 object Bullet {

@@ -71,16 +71,15 @@ class Game extends ApplicationListener with InputProcessor{
     
     //Start the game world rendering
     sb.begin()
-    shapeRender.begin(ShapeRenderer.ShapeType.Line)
-    Manager.draw(sb, shapeRender)
-    
-
-    shapeRender.end()
+      Manager.draw(sb)
     sb.end()
+    shapeRender.begin(ShapeRenderer.ShapeType.Line)
+      Manager.debug(shapeRender)
+    shapeRender.end()
     
     //use screenCam matrices so sprites can be drawn on the screen space properly
     sb.setProjectionMatrix(screenCam.combined)
-   
+
     sb.begin()
     	msg("Entities: " + Manager.entities.size, 30, 30) 
     	sb.draw(Assets.box,mx,my)

@@ -11,14 +11,16 @@ class Enemy(pos: Vector2) extends Entity(pos: Vector2) {
   var direction = Assets.rnd.nextFloat * Math.PI.toFloat * 2;
   val spin = if (Assets.rnd.nextBoolean) -1 else 1
   
-  def draw(sb: SpriteBatch, sr: ShapeRenderer) {
+  def draw(sb: SpriteBatch) {
     import ShipRef._
     val sprite = hull(shipType)
     sprite.setPosition(pos.x, pos.y)
     sprite.setRotation(rotation)
     sprite.draw(sb)
   }
-  
+  def debug(sr: ShapeRenderer) {
+    
+  }
   override def update(delta: Float) {
 
     val accel = new Vector2(speed,speed).mul(delta)

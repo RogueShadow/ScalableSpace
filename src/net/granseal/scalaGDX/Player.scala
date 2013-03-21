@@ -4,18 +4,37 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Matrix3
+import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Vector3
 
 class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
   var shipType = 0
-  def id = pid
+  val id = pid
   
-  def draw(sb: SpriteBatch, sr: ShapeRenderer) {
+  var width = ShipRef.hull(shipType).getWidth()
+  var height = ShipRef.hull(shipType).getHeight()
+  
+  def draw(sb: SpriteBatch) {
     import ShipRef._
+    
     val sprite = hull(shipType)
     sprite.setPosition(position.x, position.y)
     sprite.setRotation(rotation)
-    sprite.draw(sb)
+    sprite.draw(sb)  
+
   }
+  
+  def debug(sr: ShapeRenderer){
+
+  }
+  
+  def getPos(offsetX: Float, offsetY: Float): Vector2 = {
+    origin.add(new Vector2(offsetX,offsetY).rotate(rotation))
+  }
+  
+  def origin: Vector2 = pos.cpy().add(width/2, height/2)
   
   override def update(delta: Float) {
     import com.badlogic.gdx.Input.Keys._
@@ -37,15 +56,11 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
       rotation += 180f * delta
     }
     if (key(SPACE)){
-      
-      val p = new Vector2(pos)
-      p.rotate(rotation)
-      
       val v = new Vector2(1,1)
       v.setAngle(rotation+90)
-      v.mul(1000)
+      v.mul(400)
       
-      Manager add Bullet(p, v)
+      Manager add Bullet(getPos(0,16), v)
     }
     super.update(delta)
   }
