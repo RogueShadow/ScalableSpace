@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Rectangle
 
 class Enemy(pos: Vector2) extends Entity(pos: Vector2) {
   var shipType = 0
@@ -19,8 +20,20 @@ class Enemy(pos: Vector2) extends Entity(pos: Vector2) {
     sprite.draw(sb)
   }
   def debug(sr: ShapeRenderer) {
-    
+    sr.box(pos.x, pos.y, 0, 32, 32, 0)
   }
+  
+  def box: Rectangle = {
+    new Rectangle(pos.x, pos.y, 32, 32)
+  }
+  
+  def collided(other: Entity){
+    if (other.isInstanceOf[Bullet]){
+      Manager remove this
+      Manager remove other
+    }
+  }
+  
   override def update(delta: Float) {
 
     val accel = new Vector2(speed,speed).mul(delta)

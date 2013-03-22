@@ -34,8 +34,27 @@ object Manager {
     removeList.clear()
   }
   
+  def collision() = {
+    var e1: Entity = null
+    var e2: Entity = null
+    for (i <- 0 to entities.length){
+      for (j <- i to entities.length-1){
+        if (i != j){
+           e1 = entities(i)
+           e2 = entities(j)
+           if (e1.box.overlaps(e2.box)){
+             e1.collided(e2)
+             e2.collided(e1)
+           }
+        }
+      }
+    }    
+  }
   def update(delta: Float) {
     entities.foreach(_.update(delta))
+    
+
+    collision()
     doLists()
   }
   

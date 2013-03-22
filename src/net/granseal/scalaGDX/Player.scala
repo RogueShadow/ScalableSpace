@@ -8,13 +8,24 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.math.Rectangle
 
 class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
   var shipType = 0
   val id = pid
+  var shotTimer = 0.0f
+  val shotDelay = 0.1f
   
   var width = ShipRef.hull(shipType).getWidth()
   var height = ShipRef.hull(shipType).getHeight()
+  
+  def box: Rectangle = {
+    new Rectangle(pos.x, pos.y, width, height)
+  }
+  
+  def collided(other: Entity) {
+    
+  }
   
   def draw(sb: SpriteBatch) {
     import ShipRef._
@@ -56,13 +67,23 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
       rotation += 180f * delta
     }
     if (key(SPACE)){
+      shootBullet(delta)
+    }
+    super.update(delta)
+  }
+  
+  def shootBullet(delta: Float): Boolean = {
+    if (shotTimer >= shotDelay){
+      shotTimer = 0
       val v = new Vector2(1,1)
       v.setAngle(rotation+90)
       v.mul(400)
-      
       Manager add Bullet(getPos(0,16), v)
+      true
+    }else{
+      shotTimer += delta
+      false
     }
-    super.update(delta)
   }
   
   override def isPlayer = true
