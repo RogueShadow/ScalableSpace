@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.audio.AudioDevice
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.Input
 
 
 class Game extends ApplicationListener with InputProcessor{
@@ -22,6 +23,7 @@ class Game extends ApplicationListener with InputProcessor{
   var gameCam: OrthographicCamera = _
   var screenCam: OrthographicCamera = _
   var fps = new FPSLogger()
+  var debug: Boolean = false
   
   def create(): Unit = {
     
@@ -72,9 +74,11 @@ class Game extends ApplicationListener with InputProcessor{
     //Start the game world rendering
     sb.begin()
       Manager.draw(sb)
+      ParticleEngine.draw(sb)
     sb.end()
     shapeRender.begin(ShapeRenderer.ShapeType.Line)
-      Manager.debug(shapeRender)
+
+      if (debug)Manager.debug(shapeRender)
     shapeRender.end()
     
     //use screenCam matrices so sprites can be drawn on the screen space properly
@@ -98,12 +102,16 @@ class Game extends ApplicationListener with InputProcessor{
     // process input events elsewhere, polling input here.
 	import com.badlogic.gdx.Input.Keys._
     def key(k: Int) = Gdx.input.isKeyPressed(k)
-    
+
     Manager.update(delta)
+    
+    ParticleEngine.update(delta)
+    
     
     if (key(Z)){
       gameCam.zoom -= 1f*delta
     }
+	
 	if (key(X)){
 	  gameCam.zoom += 1f*delta
 	}
@@ -139,7 +147,10 @@ class Game extends ApplicationListener with InputProcessor{
 	}
     true
   } 
-  def keyUp(keycode: Int) = false
+  def keyUp(keycode: Int) = {
+    if (keycode == Input.Keys.C) debug = !debug
+    false
+  }
   def keyTyped(character: Char) = false
   def touchUp(x: Int, y: Int, p: Int, button: Int) = false
   def touchDragged(x: Int, y: Int, p: Int) = false

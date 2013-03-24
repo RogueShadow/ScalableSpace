@@ -38,11 +38,11 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
   }
   
   def debug(sr: ShapeRenderer){
-
+    sr.box(pos.x, pos.y, 0, 32, 32, 0)
   }
   
   def getPos(offsetX: Float, offsetY: Float): Vector2 = {
-    origin.add(new Vector2(offsetX,offsetY).rotate(rotation))
+    origin.add(new Vector2(offsetX,offsetY).rotate(rotation)).cpy()
   }
   
   def origin: Vector2 = pos.cpy().add(width/2, height/2)
@@ -54,6 +54,7 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
     if (key(W)) {
     	velocity.set(new Vector2(100,100))
     	velocity.setAngle(rotation + 90)
+    	ParticleEngine.Smoke(getPos(0,-19))
     }else{
       velocity.mul(0.9995f)
     }
@@ -78,7 +79,7 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
       val v = new Vector2(1,1)
       v.setAngle(rotation+90)
       v.mul(400)
-      Manager add Bullet(getPos(0,16), v)
+      Manager add Bullet(this, getPos(0,16), v)
       true
     }else{
       shotTimer += delta

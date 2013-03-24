@@ -50,6 +50,7 @@ object Manager {
       }
     }    
   }
+  
   def update(delta: Float) {
     entities.foreach(_.update(delta))
     
