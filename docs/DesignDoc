@@ -22,3 +22,22 @@ Features:
     Multiplayer ( totally would be awesome, here's hoping.
     Well formatted, well thought out and organized Design Doc, (eventually!)
     Pretty Sounds/Music/Art
+    
+    
+GameFlow:
+  Encounter enemy:
+    Initiate detailed scan, details revealed based on scanner type, and enemy configuration
+    While scan is running try the usual hit and run, see if you can guess what's effective against them. (there should be minimal visual indications what to use)
+    Once scan completes if successful, and if you have the required things, reconfigure weapons, shields, etc. to counter enemy.
+    Use your skills to finish it off. 
+    Some energy weapon/shield combinations could benefit the enemy instead of hurt them. Could range from super effective, ineffective to beneficial. (beneficial likely to be, energy is absorbed, recharge shields/ship reserves. etc)
+    Physical weapons always do "something" but not necessarily effective, especially against shields.
+    Armor configuration is also important, but at most ineffective, never beneficial to be attacked.
+    May be a lot to take care of, but pausing shouldn't be necessary, if it is, it will be considered a usability issue, not complexity.
+    Bonus: Hmm, engine exhaust cause some kind of damage to ships? Maybe.
+    Travel to another star system, travel always takes place through usable space (but likely to be empty Most of the time anyway)
+    Long range scanner power and configuration determine what and how far you can scan (In order to find useful things, like asteroids to mine, certain types of stars (which contain certain types of resources))
+    Initially limited to scanners that will scan local system, (due to range, not because there's any real difference in space), later long range scanners to scan neighboring systems
+    Explore planets to check for quests or trade with them.
+    Initially will be confined to single systems, and/or restricted to using warpgates to travel between systems.  Aquiring a warp drive will be later, will require power to use. (can be stranded and take a while to get home, check navigatin computer and energy reserves)
+    
