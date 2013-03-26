@@ -3,28 +3,30 @@ package net.granseal.scalaGDX
 import scala.collection.mutable.ArrayBuffer
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import scala.collection.mutable.HashMap
 
 object Manager {
 
   val entities = new ArrayBuffer[Entity]
   val addList = new ArrayBuffer[Entity]
   val removeList = new ArrayBuffer[Entity]
-  val playerList = new ArrayBuffer[Player]
+  
+  val controlStates = new HashMap[Int,ShipControlState]
   
   def init() = {
     
     
   }
   
-  def getPlayer(id: Int): Option[Player] = {
-    playerList.find(e => e.id == id)
-  }
-  
   def add[T <: Entity](e: T) = {
     addList += e
-    if (e.isInstanceOf[Player])playerList += e.asInstanceOf[Player]
+    if (e.isInstanceOf[Ship]){
+      val s = e.asInstanceOf[Ship]
+      controlStates(s.id) = new ShipControlState(s.id)
+    }
   }
-
+  
+  
   def remove(e: Entity) = removeList += e
   
   def doLists() = {
@@ -51,8 +53,21 @@ object Manager {
     }    
   }
   
+  def update(cs: ShipControlState){
+    controlStates(cs.shipID) = cs
+  }
   def update(delta: Float) {
-    entities.foreach(_.update(delta))
+    entities.foreach(x => 
+      {
+	    if (x.isInstanceOf[Ship]){
+	      val s = x.asInstanceOf[Ship]
+	      val cstate = controlStates(s.id)
+	      if (cstate == null)Console.println("Error: Couldn't find control state for shipID(" + s.id + ")")
+	      s.cState = cstate
+	    }
+        x.update(delta)
+      }
+    )
     
 
     collision()

@@ -10,21 +10,27 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.Rectangle
 
-class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
+class Ship(pos: Vector2, var isPlayer: Boolean, val id: Int) extends Entity(pos: Vector2) {
   var shipType = 0
-  val id = pid
   var shotTimer = 0.0f
   val shotDelay = 0.1f
-  
+  var sState: ShipState = new ShipState
+  var cState: ShipControlState = new ShipControlState(id)
   var width = ShipRef.hull(shipType).getWidth()
   var height = ShipRef.hull(shipType).getHeight()
-  
+
+
   def box: Rectangle = {
     new Rectangle(pos.x, pos.y, width, height)
   }
   
   def collided(other: Entity) {
-    
+    if (other.isInstanceOf[Bullet]){
+      if ((other.asInstanceOf[Bullet]).owner != this){
+      ParticleEngine.Explode(other.pos.cpy())
+      Manager remove other
+      }
+    }
   }
   
   def draw(sb: SpriteBatch) {
@@ -48,38 +54,36 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
   def origin: Vector2 = pos.cpy().add(width/2, height/2)
   
   override def update(delta: Float) {
-    import com.badlogic.gdx.Input.Keys._
-    def key(k: Int) = Gdx.input.isKeyPressed(k)
-
-    if (key(W)) {
+    
+    if (cState.Main_Thruster) {
     	velocity.set(new Vector2(100,100))
     	velocity.setAngle(rotation + 90)
     	ParticleEngine.Smoke(getPos(0,-19))
     }else{
       velocity.mul(0.9995f)
     }
-    if (key(A)) {
+    if (cState.Left_Thruster) {
       rotation -= 180f * delta
     }
-    if (key(S)) {
-
+    if (cState.Space_Brake) {
+      velocity.mul(0.995f)
     }
-    if (key(D)) {
+    if (cState.Right_Thruster) {
       rotation += 180f * delta
     }
-    if (key(SPACE)){
+    if (cState.PrimaryWeaponActive){
       shootBullet(delta)
     }
     super.update(delta)
   }
   
   def shootBullet(delta: Float): Boolean = {
-    if (shotTimer >= shotDelay){
+    if (shotTimer >= shotDelay) {
       shotTimer = 0
       val v = new Vector2(1,1)
       v.setAngle(rotation+90)
       v.mul(400)
-      Manager add Bullet(this, getPos(0,16), v)
+      Manager add Bullet(Ship.this, getPos(0,16), v)
       true
     }else{
       shotTimer += delta
@@ -87,9 +91,8 @@ class Player(pos: Vector2, pid: Int) extends Entity(pos: Vector2) {
     }
   }
   
-  override def isPlayer = true
 }
 
-object Player {
-  def apply(pos: Vector2, id: Int) = new Player(pos,id)
+object Ship {
+  def apply(pos: Vector2, isPlayer: Boolean, id: Int) = new Ship(pos, isPlayer, id)
 }

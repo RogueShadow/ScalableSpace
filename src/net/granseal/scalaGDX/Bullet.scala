@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Rectangle
 
-class Bullet(owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends Entity(pos: Vector2) {
+class Bullet(val owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends Entity(pos: Vector2) {
   
   velocity.set(v)
   var life = 0.0f
@@ -24,10 +24,9 @@ class Bullet(owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends Entit
   }
   
   def collided(other: Entity){
-   // if (other != owner){
-    ParticleEngine.Explode(pos.cpy())
+    if (other != owner){
 
-   // }
+    }
   }
     
   def draw(sb: SpriteBatch) {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 
-abstract class Entity(pos: Vector2) {
+abstract class Entity(val pos: Vector2) {
   val vel: Vector2 = new Vector2(0,0)
   var rotation: Float = 0.0f
   
@@ -23,6 +23,5 @@ abstract class Entity(pos: Vector2) {
   def collided(other: Entity)
   
   def debug(sr: ShapeRenderer)
-  
-  def isPlayer = false
+
 }

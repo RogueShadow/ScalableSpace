@@ -43,8 +43,8 @@ class Game extends ApplicationListener with InputProcessor{
     gameCam = new OrthographicCamera
     gameCam.setToOrtho(true,800,600)
 
-    Manager add Enemy(new Vector2(400,300))
-    Manager add Player(new Vector2(400,300), 1)
+    Manager add Ship(new Vector2(400,300), true, 0)
+    Manager add Ship(new Vector2(300,300), false, 1)
    
   }
   def dispose(): Unit = {
@@ -102,7 +102,18 @@ class Game extends ApplicationListener with InputProcessor{
     // process input events elsewhere, polling input here.
 	import com.badlogic.gdx.Input.Keys._
     def key(k: Int) = Gdx.input.isKeyPressed(k)
-
+    val cs = new ShipControlState(1)
+    val cs2 = new ShipControlState(0)
+	if (key(W))cs.Main_Thruster = true
+	if (key(A))cs.Left_Thruster = true
+	if (key(D))cs.Right_Thruster = true
+	if (key(SPACE))cs.PrimaryWeaponActive = true
+	if (key(S))cs.Space_Brake = true
+	
+	cs2.Left_Thruster = true
+	Manager.update(cs2)
+    
+    Manager.update(cs)
     Manager.update(delta)
     
     ParticleEngine.update(delta)
@@ -117,14 +128,7 @@ class Game extends ApplicationListener with InputProcessor{
 	}
 	
 	// track player to camera, maybe there's a better way?
-    val player = Manager.getPlayer(1)
-    if (player.isDefined){
-      val x = player.get.position.x
-      val y = player.get.position.y
-      gameCam.position.set(x, y, 0)
-    }else{
-      Console.out.println("Player not found.")
-    }
+
     
   }
   
