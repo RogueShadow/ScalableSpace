@@ -97,6 +97,7 @@ class Game extends ApplicationListener with InputProcessor{
 
     sb.begin()
     	msg("Entities: " + Manager.entities.size, 30, 30) 
+    	msg("Time: " + Manager.currentTime, 30, 50)
     	sb.draw(Assets.box,mx,my)
     sb.end()
     

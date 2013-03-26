@@ -7,6 +7,7 @@ import scala.collection.mutable.HashMap
 
 object Manager {
 
+  var currentTime: Long = 0
   val entities = new ArrayBuffer[Entity]
   val addList = new ArrayBuffer[Entity]
   val removeList = new ArrayBuffer[Entity]
@@ -67,6 +68,7 @@ object Manager {
     controlStates(cs.shipID) = cs
   }
   def update(delta: Float) {
+    currentTime += (delta*1000).toLong
     entities.foreach(x => 
       {
         if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).control = controlStates((x.asInstanceOf[Ship]).state.id)
