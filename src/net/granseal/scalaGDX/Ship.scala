@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.Rectangle
 
-class Ship(pos: Vector2, var isPlayer: Boolean, val id: Int) extends Entity(pos: Vector2) {
+class Ship(pos: Vector2,val id: Int) extends Entity(pos: Vector2) {
   var shipType = 0
   var shotTimer = 0.0f
   val shotDelay = 0.1f
@@ -94,5 +94,5 @@ class Ship(pos: Vector2, var isPlayer: Boolean, val id: Int) extends Entity(pos:
 }
 
 object Ship {
-  def apply(pos: Vector2, isPlayer: Boolean, id: Int) = new Ship(pos, isPlayer, id)
+  def apply(pos: Vector2, id: Int) = new Ship(pos, id)
 }
