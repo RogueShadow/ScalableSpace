@@ -15,7 +15,7 @@ object Assets {
 	val boxSprite = new Sprite(box)
 	
 	// default font, likely to change totally!
-	val font = new BitmapFont(Gdx.files.internal("assets/thefont.fnt"),Gdx.files.internal("assets/thefont.png"),true)
+	val font = new BitmapFont(true)
 	
 	// keep a random around!  And a shorthand method to get a float, and one for a color
 	val rnd = new Random()
