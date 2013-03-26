@@ -1,18 +1,17 @@
 package net.granseal.scalaGDX
 
+import com.badlogic.gdx.math.Vector2
+
 
 class ShipAI {
-  
-  var oldState: ShipState = new ShipState()
-  // absolutely no editing ShipState ... I should enforce this somehow. 
-  //TODO that.
-  def update(s: ShipState): ShipControlState = {
+
+  //TODO Make ship state read only in this context.
+  def update(s: ShipState, old: ShipState): ShipControlState = {
     val cs = new ShipControlState(s.id)
     s.pos
-    if ((oldState.rot - s.rot) < 10)cs.Left_Thruster = true
-    if (s.vel.len2() < 20)cs.Main_Thruster = true
-
-    oldState = s
+    if ((old.rot - s.rot) < 10)cs.Left_Thruster = true
+    if (old.pos.dst(s.pos) < 20)cs.Main_Thruster = true
+    cs.lastState = s
     cs
   }
   

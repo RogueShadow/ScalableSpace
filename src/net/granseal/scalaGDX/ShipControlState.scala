@@ -1,6 +1,7 @@
 package net.granseal.scalaGDX
 
 class ShipControlState(val shipID: Int) {
+  var lastState: ShipState = null
   var Main_Thruster = false
   var Left_Thruster = false
   var Right_Thruster = false

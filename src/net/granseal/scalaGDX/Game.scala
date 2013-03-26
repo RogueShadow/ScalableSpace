@@ -48,12 +48,18 @@ class Game extends ApplicationListener with InputProcessor{
 
     player = Ship(new Vector2(400,300), 0)
     Manager add player
-    Manager add Ship(new Vector2(300,300), 1)
 
+    var x = 0f
+    var y = 0f
+    for (i <- 1 to 20) {
+      x = Assets.r * 800
+      y = Assets.r * 600
+      Manager add Ship(new Vector2(x,y), i)
+    }
    
   }
   def dispose(): Unit = {
-    Assets.dispose
+    Assets.dispose()
     sb.dispose()
     shapeRender.dispose()
     Console.println("Disposing resources")
@@ -117,11 +123,12 @@ class Game extends ApplicationListener with InputProcessor{
 	
 
     
-	val s = Manager.getShip(1)
-	if (s.isDefined){
-	  val cs = testAI.update(s.get.sState)
-	  Manager update cs
-	}
+	Manager.getShips().foreach(s => {
+	  if (s.state.id != 0) {
+	    Manager.update(testAI.update(s.state, s.control.lastState))
+	  }
+	})
+	
     Manager.update(cs)
     Manager.update(delta)
     

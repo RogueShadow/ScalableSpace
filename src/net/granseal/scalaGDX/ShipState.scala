@@ -6,8 +6,8 @@ class ShipState {
   var id = 0
   var armor = 0
   var shield = 0
-  var pos: Vector2 = null
-  var vel: Vector2 = null
+  var pos: Vector2 = new Vector2(0,0)
+  var vel: Vector2 = new Vector2(0,0)
   var rot: Float = 0
   
   def cpy(): ShipState = {

@@ -18,14 +18,14 @@ object Manager {
     
   }
   
+  def getShips(): ArrayBuffer[Ship] = {
+    val ships: ArrayBuffer[Ship] = entities.filter( e => e.isInstanceOf[Ship]).asInstanceOf[ArrayBuffer[Ship]]
+    ships
+  }
+  
   def getShip(id: Int):Option[Ship] = {
-    if (entities.isEmpty)return None
-    for (i <- 0 to entities.length){
-      if (entities(i).isInstanceOf[Ship]){
-        if ((entities(i).asInstanceOf[Ship]).id == id)return Option(entities(i).asInstanceOf[Ship])
-      }
-    }
-    None
+    val ships: ArrayBuffer[Ship] = entities.filter( e => e.isInstanceOf[Ship]).asInstanceOf[ArrayBuffer[Ship]]
+    ships.find(s => s.state.id == id)
   }
   
   def add[T <: Entity](e: T) = {
@@ -69,7 +69,7 @@ object Manager {
   def update(delta: Float) {
     entities.foreach(x => 
       {
-        if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).cState = controlStates((x.asInstanceOf[Ship]).sState.id)
+        if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).control = controlStates((x.asInstanceOf[Ship]).state.id)
         x.update(delta)
       }
     )
