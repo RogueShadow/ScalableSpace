@@ -24,6 +24,7 @@ class Game extends ApplicationListener with InputProcessor{
   var screenCam: OrthographicCamera = _
   var fps = new FPSLogger()
   var debug: Boolean = false
+  val cs: ShipControlState = new ShipControlState(0)
   
   def create(): Unit = {
     
@@ -43,8 +44,9 @@ class Game extends ApplicationListener with InputProcessor{
     gameCam = new OrthographicCamera
     gameCam.setToOrtho(true,800,600)
 
-    Manager add Ship(new Vector2(400,300), true, 0)
-    Manager add Ship(new Vector2(300,300), false, 1)
+    Manager add Ship(new Vector2(400,300), 0)
+    Manager add Ship(new Vector2(300,300), 1)
+
    
   }
   def dispose(): Unit = {
@@ -102,16 +104,15 @@ class Game extends ApplicationListener with InputProcessor{
     // process input events elsewhere, polling input here.
 	import com.badlogic.gdx.Input.Keys._
     def key(k: Int) = Gdx.input.isKeyPressed(k)
-    val cs = new ShipControlState(1)
-    val cs2 = new ShipControlState(0)
+    
+    cs.reset
 	if (key(W))cs.Main_Thruster = true
 	if (key(A))cs.Left_Thruster = true
 	if (key(D))cs.Right_Thruster = true
 	if (key(SPACE))cs.PrimaryWeaponActive = true
 	if (key(S))cs.Space_Brake = true
 	
-	cs2.Left_Thruster = true
-	Manager.update(cs2)
+
     
     Manager.update(cs)
     Manager.update(delta)
@@ -128,7 +129,9 @@ class Game extends ApplicationListener with InputProcessor{
 	}
 	
 	// track player to camera, maybe there's a better way?
-
+    val pos = Manager.getShip(0).position
+    gameCam.position.x = pos.x
+    gameCam.position.y = pos.y
     
   }
   
