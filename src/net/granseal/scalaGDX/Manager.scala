@@ -18,6 +18,10 @@ object Manager {
     
   }
   
+  def getShip(id: Int):Ship = {
+    entities.filter(e => e.isInstanceOf[Ship]).filter(s => (s.asInstanceOf[Ship]).id == id)(0).asInstanceOf[Ship]
+  }
+  
   def add[T <: Entity](e: T) = {
     addList += e
     if (e.isInstanceOf[Ship]){
@@ -59,16 +63,10 @@ object Manager {
   def update(delta: Float) {
     entities.foreach(x => 
       {
-	    if (x.isInstanceOf[Ship]){
-	      val s = x.asInstanceOf[Ship]
-	      val cstate = controlStates(s.id)
-	      if (cstate == null)Console.println("Error: Couldn't find control state for shipID(" + s.id + ")")
-	      s.cState = cstate
-	    }
+        if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).cState = controlStates((x.asInstanceOf[Ship]).id)
         x.update(delta)
       }
     )
-    
 
     collision()
     doLists()
