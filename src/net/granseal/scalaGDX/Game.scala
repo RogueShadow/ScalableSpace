@@ -25,6 +25,8 @@ class Game extends ApplicationListener with InputProcessor{
   var fps = new FPSLogger()
   var debug: Boolean = false
   val cs: ShipControlState = new ShipControlState(0)
+  val testAI: ShipAI = new ShipAI()
+  var player: Ship = null
   
   def create(): Unit = {
     
@@ -44,7 +46,8 @@ class Game extends ApplicationListener with InputProcessor{
     gameCam = new OrthographicCamera
     gameCam.setToOrtho(true,800,600)
 
-    Manager add Ship(new Vector2(400,300), 0)
+    player = Ship(new Vector2(400,300), 0)
+    Manager add player
     Manager add Ship(new Vector2(300,300), 1)
 
    
@@ -114,6 +117,11 @@ class Game extends ApplicationListener with InputProcessor{
 	
 
     
+	val s = Manager.getShip(1)
+	if (s.isDefined){
+	  val cs = testAI.update(s.get.sState)
+	  Manager update cs
+	}
     Manager.update(cs)
     Manager.update(delta)
     
@@ -129,9 +137,9 @@ class Game extends ApplicationListener with InputProcessor{
 	}
 	
 	// track player to camera, maybe there's a better way?
-    val pos = Manager.getShip(0).position
-    gameCam.position.x = pos.x
-    gameCam.position.y = pos.y
+    
+    gameCam.position.x = player.pos.x
+    gameCam.position.y = player.pos.y
     
   }
   

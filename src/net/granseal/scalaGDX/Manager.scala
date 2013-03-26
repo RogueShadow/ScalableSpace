@@ -18,8 +18,14 @@ object Manager {
     
   }
   
-  def getShip(id: Int):Ship = {
-    entities.filter(e => e.isInstanceOf[Ship]).filter(s => (s.asInstanceOf[Ship]).id == id)(0).asInstanceOf[Ship]
+  def getShip(id: Int):Option[Ship] = {
+    if (entities.isEmpty)return None
+    for (i <- 0 to entities.length){
+      if (entities(i).isInstanceOf[Ship]){
+        if ((entities(i).asInstanceOf[Ship]).id == id)return Option(entities(i).asInstanceOf[Ship])
+      }
+    }
+    None
   }
   
   def add[T <: Entity](e: T) = {
@@ -63,7 +69,7 @@ object Manager {
   def update(delta: Float) {
     entities.foreach(x => 
       {
-        if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).cState = controlStates((x.asInstanceOf[Ship]).id)
+        if (x.isInstanceOf[Ship])(x.asInstanceOf[Ship]).cState = controlStates((x.asInstanceOf[Ship]).sState.id)
         x.update(delta)
       }
     )

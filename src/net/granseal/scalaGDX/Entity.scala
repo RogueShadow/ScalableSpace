@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Rectangle
 
 abstract class Entity(val pos: Vector2) {
   val vel: Vector2 = new Vector2(0,0)
-  var rotation: Float = 0.0f
   
   def position = pos
   def velocity = vel
