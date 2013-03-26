@@ -7,9 +7,12 @@ import com.badlogic.gdx.Gdx
 import scala.util.Random
 import com.badlogic.gdx.graphics.Color
 import scala.collection.mutable.HashMap
+import com.badlogic.gdx.audio.Sound
 
 object Assets {
   
+    
+    
     // graceful failure. prabably not needed, but nifty!
 	val box = new Texture("assets/box.png")
 	val boxSprite = new Sprite(box)
@@ -26,6 +29,7 @@ object Assets {
 	// resources referenced by friendly string names :D
 	val images = new HashMap[String, Texture]
 	val sprites = new HashMap[String, Sprite]
+	val sounds = new HashMap[String, Sound]
 
 	//Gotta dispose of those pesky resources
 	def dispose() {
@@ -34,6 +38,20 @@ object Assets {
 	  for ((key, value) <- images){
 	    value.dispose()
 	  }
+	  for ((key, value) <- sounds){
+	    value.dispose()
+	  }
+	}
+	
+	def addSound(name: String, file: String){
+	  if (!sounds.contains(name)){
+	    val snd = Gdx.audio.newSound(Gdx.files.internal(file))
+	    sounds += ((name, snd))
+	  }
+	}
+	def removeSound(name: String){
+		sounds(name).dispose()
+		sounds.remove(name)
 	}
 
 	// Method to add texture and sprite simultaneously. Using friendly name for both resources
