@@ -9,6 +9,7 @@ class ShipState {
   var pos: Vector2 = new Vector2(0,0)
   var vel: Vector2 = new Vector2(0,0)
   var rot: Float = 0
+  var turnSpeed: Int = 310
   
   def cpy(): ShipState = {
     var s = new ShipState

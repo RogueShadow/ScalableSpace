@@ -46,7 +46,7 @@ object ParticleEngine {
   }
   def Explode(pos: Vector2){
     for (i <- 1 to 10){
-      add( Particle(pos.cpy(), randVel(Assets.r*90), Assets.getSprite("star1"), 10, 0, Assets.r* .2f * (if (Assets.r > 0.5) 1 else -1), 1, 1.001f))
+      add( Particle(pos.cpy(), randVel(Assets.r*90), Assets.getSprite("star1"), 1, 0, Assets.r* .2f * (if (Assets.r > 0.5) 1 else -1), 1, 1.001f))
     }
   }
   

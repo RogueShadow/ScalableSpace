@@ -38,11 +38,12 @@ class Ship(pos: Vector2,val id: Int) extends Entity(pos: Vector2) {
 
       if (state.armor <= 0){
         val p = getPos(0,0)
-        for (i <- 1 to 20){
-          var x = Math.sin(Assets.r*Math.PI*2)*Assets.r*90
-          var y = Math.cos(Assets.r*Math.PI*2)*Assets.r*80
-          ParticleEngine.Explode(p.cpy())
+        for (i <- 1 to 28){
+          var x = Math.sin(Assets.r*Math.PI*2).toFloat*Assets.r*30f
+          var y = Math.cos(Assets.r*Math.PI*2).toFloat*Assets.r*30f
+          ParticleEngine.Explode(p.cpy().add(x, y))
         }
+        Assets.sounds("blast").play()
         Manager remove this
            
       }else{
@@ -81,13 +82,13 @@ class Ship(pos: Vector2,val id: Int) extends Entity(pos: Vector2) {
       velocity.mul(0.9995f)
     }
     if (control.Left_Thruster) {
-      state.rot -= 180f * delta
+      state.rot -= state.turnSpeed * delta
     }
     if (control.Space_Brake) {
       velocity.mul(0.995f)
     }
     if (control.Right_Thruster) {
-      state.rot += 180f * delta
+      state.rot += state.turnSpeed * delta
     }
     if (control.PrimaryWeaponActive){
       shootBullet(delta)

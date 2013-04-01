@@ -18,6 +18,7 @@ import com.badlogic.gdx.Input
 
 class Game extends ApplicationListener with InputProcessor{
   
+  var startTime = System.currentTimeMillis()
   var sb: SpriteBatch = _
   var shapeRender: ShapeRenderer = _
   var gameCam: OrthographicCamera = _
@@ -56,6 +57,7 @@ class Game extends ApplicationListener with InputProcessor{
       y = Assets.r * 600
       Manager add Ship(new Vector2(x,y), i)
     }
+    startTime = System.currentTimeMillis()
    
   }
   def dispose(): Unit = {
@@ -97,7 +99,8 @@ class Game extends ApplicationListener with InputProcessor{
 
     sb.begin()
     	msg("Entities: " + Manager.entities.size, 30, 30) 
-    	msg("Time: " + Manager.currentTime, 30, 50)
+    	msg("ManagerTime(" + Manager.currentTime.toString + ")", 30, 50)
+    	msg("  SystemTime(" + getElapsedTime.toString + ")", 30, 70)
     	sb.draw(Assets.box,mx,my)
     sb.end()
     
@@ -107,7 +110,9 @@ class Game extends ApplicationListener with InputProcessor{
   def resume(): Unit = {}
 
   
-
+  def getElapsedTime: Long = {
+    System.currentTimeMillis() - startTime
+  }
   def update(delta: Float): Unit = {
     // Import keys localy for easy configs!
     // Will have to do a proper key binding system later on.
