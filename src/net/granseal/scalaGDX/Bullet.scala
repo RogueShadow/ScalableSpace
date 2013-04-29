@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle
 
 class Bullet(val owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends Entity(pos: Vector2) {
   
-  Assets.sounds("shot").play()
+  Assets.sounds("shot").play(0.5f)
   velocity.set(v)
   var life = 0.0f
   
@@ -15,6 +15,7 @@ class Bullet(val owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends E
     life += delta
     if (life >= lifetime){
       Manager remove this
+      Console.println("Removing Bullet")
     }
     super.update(delta)
   }
@@ -27,6 +28,7 @@ class Bullet(val owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends E
   def collided(other: Entity){
     if (other != owner){
       Assets.sounds("blast").play()
+      Manager remove this
     }
   }
     

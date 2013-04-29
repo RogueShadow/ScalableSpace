@@ -14,9 +14,13 @@ import com.badlogic.gdx.audio.AudioDevice
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.Input
-
+import com.badlogic.gdx.graphics.Color
 
 class Game extends ApplicationListener with InputProcessor{
+  val WIDTH = 800
+  val HEIGHT = 600
+  def HWIDTH = WIDTH/2
+  def HHEIGHT = HEIGHT/2
   
   var startTime = System.currentTimeMillis()
   var sb: SpriteBatch = _
@@ -29,7 +33,10 @@ class Game extends ApplicationListener with InputProcessor{
   val testAI: ShipAI = new ShipAI()
   var player: Ship = null
   
+  
   def create(): Unit = {
+    
+    val p = new java.util.Properties
     
     Gdx.input.setCursorCatched(true)
     Gdx.input.setInputProcessor(this)
@@ -43,28 +50,29 @@ class Game extends ApplicationListener with InputProcessor{
     shapeRender = new ShapeRenderer
     
     screenCam = new OrthographicCamera
-    screenCam.setToOrtho(true,800,600)
+    screenCam.setToOrtho(true,WIDTH,HEIGHT)
     gameCam = new OrthographicCamera
-    gameCam.setToOrtho(true,800,600)
+    gameCam.setToOrtho(true,WIDTH,HEIGHT)
 
-    player = Ship(new Vector2(400,300), 0)
+    player = Ship(new Vector2(HWIDTH,HHEIGHT), 0)
+    Console.println("Adding player to world")
     Manager add player
 
     var x = 0f
     var y = 0f
     for (i <- 1 to 20) {
-      x = Assets.r * 800
-      y = Assets.r * 600
+      x = Assets.r * WIDTH
+      y = Assets.r * HEIGHT
       Manager add Ship(new Vector2(x,y), i)
     }
     startTime = System.currentTimeMillis()
    
   }
   def dispose(): Unit = {
+    Console.println("Disposing resources")
     Assets.dispose()
     sb.dispose()
     shapeRender.dispose()
-    Console.println("Disposing resources")
   }
   def pause(): Unit = {}
   def render(): Unit = {
@@ -90,7 +98,9 @@ class Game extends ApplicationListener with InputProcessor{
       ParticleEngine.draw(sb)
     sb.end()
     shapeRender.begin(ShapeRenderer.ShapeType.Line)
-
+      shapeRender.setColor(Color.GREEN)
+      shapeRender.rect(gameCam.position.x-HWIDTH,gameCam.position.y-HHEIGHT,WIDTH,HEIGHT)
+      
       if (debug)Manager.debug(shapeRender)
     shapeRender.end()
     
@@ -98,7 +108,7 @@ class Game extends ApplicationListener with InputProcessor{
     sb.setProjectionMatrix(screenCam.combined)
 
     sb.begin()
-    	msg("Entities: " + Manager.entities.size, 30, 30) 
+    	msg("Entities: " + Manager.grid.list.size, 30, 30) 
     	msg("ManagerTime(" + Manager.currentTime.toString + ")", 30, 50)
     	msg("  SystemTime(" + getElapsedTime.toString + ")", 30, 70)
     	sb.draw(Assets.box,mx,my)
@@ -135,6 +145,7 @@ class Game extends ApplicationListener with InputProcessor{
 	  }
 	})
 	
+	Manager.screen.set(gameCam.position.x - HWIDTH, gameCam.position.y - HHEIGHT, WIDTH, HEIGHT)
     Manager.update(cs)
     Manager.update(delta)
     
@@ -158,10 +169,17 @@ class Game extends ApplicationListener with InputProcessor{
   
   def mx = Gdx.input.getX().toFloat
   def my = Gdx.input.getY().toFloat
+  def worldX(screenX: Int): Float = screenX + gameCam.position.x - HWIDTH
+  def worldY(screenY: Int): Float = screenY + gameCam.position.y - HHEIGHT
   
   //Process input Events here. VVV
-  def touchDown(x: Int, y: Int, p: Int, button: Int) = {
+  def touchDown(screenX: Int, screenY: Int, p: Int, button: Int) = {
     Gdx.input.setCursorCatched(true)
+    
+    worldClick(worldX(screenX), worldY(screenY), p, button)
+  }
+  def worldClick(x: Float, y: Float, p: Int, button: Int) = {
+    Manager add Ship(new Vector2(x, y),21)
     false
   }
   def keyDown(keycode: Int) = {

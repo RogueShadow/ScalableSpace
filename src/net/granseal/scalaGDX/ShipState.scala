@@ -17,6 +17,8 @@ class ShipState {
     s.shield = this.shield
     s.pos = this.pos
     s.vel = this.vel
+    s.rot = this.rot
+    s.turnSpeed = this.turnSpeed
     s
   }
 }
