@@ -44,9 +44,5 @@ class Bullet(val owner: Entity,pos: Vector2, v: Vector2,lifetime: Int) extends E
 
 object Bullet {
   
-  Assets.addSpriteTexture("assets/bullet.png", "bullet_0")
-  Assets.addSound("shot", "assets/shot2.wav")
-  Assets.addSound("blast", "assets/blast2.wav")
-  
   def apply(owner: Entity, pos: Vector2, vel: Vector2) = new Bullet(owner, pos, vel,2)
 }

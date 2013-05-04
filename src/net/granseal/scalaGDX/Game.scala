@@ -33,17 +33,26 @@ class Game extends ApplicationListener with InputProcessor{
   val testAI: ShipAI = new ShipAI()
   var player: Ship = null
   
-  
+  def loadGameAssets() {
+    
+    Assets.addSpriteTexture("assets/debri.png", "debri")
+    Assets.addSpriteTexture("assets/smoke.png", "smoke")
+    Assets.addSpriteTexture("assets/star.png", "star")
+    Assets.addSpriteTexture("assets/star1.png", "star1")
+    Assets.addSpriteTexture("assets/spaceship.png", "hull_0")
+    Assets.addSpriteTexture("assets/bullet.png", "bullet_0")
+    Assets.addSound("shot", "assets/shot2.wav")
+    Assets.addSound("blast", "assets/blast2.wav")
+    
+  }
   def create(): Unit = {
     
+    loadGameAssets()
     val p = new java.util.Properties
     
     Gdx.input.setCursorCatched(true)
     Gdx.input.setInputProcessor(this)
-    	  
-    //Load Assets related to ships.
-    ShipRef.loadAssets()
-    
+
     Gdx.graphics.setVSync(false)
     
     sb = new SpriteBatch
@@ -99,7 +108,7 @@ class Game extends ApplicationListener with InputProcessor{
     sb.end()
     shapeRender.begin(ShapeRenderer.ShapeType.Line)
       shapeRender.setColor(Color.GREEN)
-      shapeRender.rect(gameCam.position.x-HWIDTH,gameCam.position.y-HHEIGHT,WIDTH,HEIGHT)
+      if (debug)shapeRender.rect(gameCam.position.x-HWIDTH,gameCam.position.y-HHEIGHT,WIDTH,HEIGHT)
       
       if (debug)Manager.debug(shapeRender)
     shapeRender.end()

@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 
 object ShipRef {
   
-  def loadAssets() {
-    Assets.addSpriteTexture("assets/spaceship.png", "hull_0")
-  }
-  
   // HashMap[Int, Sprite] Where Int == Type of Ship
   val hullSprites = HashMap(
     0 -> "hull_0"
@@ -19,11 +15,17 @@ object ShipRef {
   )
   
   val shipThrusters = HashMap(
-      0 -> 200
+      0 -> 200,
+      1 -> 400,
+      2 -> 600,
+      3 -> 800
   )
   
   val engineMaxSpeed = HashMap(
-      0 -> 100
+      0 -> 100,
+      1 -> 150,
+      2 -> 200,
+      3 -> 250
   )
   
   def hull(shipType: Int): Sprite = Assets.getSprite(hullSprites(shipType))

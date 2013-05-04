@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Rectangle
 
 class Ship(pos: Vector2,val id: Int) extends Entity(pos: Vector2) {
   var shipType = 0
-  var engineType = 0
+  var engineType = 3
   var brakeType = 0
   var shotTimer = 0.0f
   val shotDelay = 0.1f
@@ -60,7 +60,6 @@ class Ship(pos: Vector2,val id: Int) extends Entity(pos: Vector2) {
     import ShipRef._
     
     val sprite = hull(shipType)
-    if (isVisible)sprite.setColor(Color.CYAN) else sprite.setColor(Color.WHITE)
     sprite.setPosition(position.x, position.y)
     sprite.setRotation(state.rot)
     sprite.draw(sb)  

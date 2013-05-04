@@ -7,11 +7,6 @@ import com.badlogic.gdx.math.Vector2
 
 object ParticleEngine {
   
-  Assets.addSpriteTexture("assets/debri.png", "debri")
-  Assets.addSpriteTexture("assets/smoke.png", "smoke")
-  Assets.addSpriteTexture("assets/star.png", "star")
-  Assets.addSpriteTexture("assets/star1.png", "star1")
-  
   val particles = new ArrayBuffer[Particle]
   val addList = new ArrayBuffer[Particle]
   val removeList = new ArrayBuffer[Particle]
